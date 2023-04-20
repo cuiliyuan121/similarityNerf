@@ -1,0 +1,65 @@
+model:
+  # Edit the below settings to overwrite the default hyperparameters
+  # You can also overwrite in cli arguments
+  object_pose_proposal:
+    backbone: resnet34
+    n_layers: 2
+    W: 256
+    num_category: auto
+    category_emdedding: 512
+    orientation_bin: 16
+    relation_net:
+      d_k: 64
+      Nr: 16
+      d_g: 64
+    dim_embedding: 64
+    pretrained: True
+  input_images: [color_norm, mask, depth]
+  # The bellow settings do not effect the model architecture
+  object_association_proposal:
+    sim_scale: 5.
+  loss:
+    max_affinity_sample: 2048
+    func:
+      orientation_cls: torch.nn.CrossEntropyLoss
+      center_depth: torch.nn.L1Loss
+      size_scale: torch.nn.L1Loss
+      offset: torch.nn.L1Loss
+      corner: torch.nn.L1Loss
+    weight:
+      orientation_cls: 1.
+      center_depth: 1.
+      size_scale: 1.
+      offset: 1.
+      corner: 1.
+      affinity: 1.
+  train:
+    log_img_iter: 10000
+    lr: 1.e-04
+    lr_scheduler:
+      gamma: 0.5
+      step_size: 50
+    train_object_embedding: False
+  dataloader:
+    num_workers: 8
+    batch_size: 1
+    pin_memory: True
+  dataset:
+    dir: data/scene-monocular_depth
+    ids: null
+    cameras: null
+    max_camera: null
+    min_camera: 1
+    max_object: 50
+    min_object: 2  # min object per camera
+    min_overlap_object: 0
+    min_object_area: .1
+    input_dir: null
+    resize_width: 256
+    zoom_out_ratio: 2.
+    bdb2d_noise_std: 0.05
+trainer:
+  max_epochs: 120
+  strategy: ddp
+  accelerator: gpu
+seed: 0

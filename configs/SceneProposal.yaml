@@ -1,0 +1,71 @@
+model:
+  camera_pose_proposal:
+    checkpoint: outputs/mk2snrj5/checkpoints/last.ckpt
+  object_proposal:
+    checkpoint: outputs/n5romgyi/checkpoints/last.ckpt
+  nms2d_thres: 0.1
+  nms3d_thres: 0.1
+  num_orientation_proposal: 3
+  max_relative_yaw_proposal: 3
+  max_camera_pose_proposal: 16
+  max_association_proposal: 16
+  affinity_thres: 0.5
+  gt_match_iou_thres: 0.1
+  loss_thres:  # threshold any association proposal must meet
+    affinity_loss: 0.5
+    object_size_loss: 0.3
+    object_center_loss: 1.
+    association_loss: 25.
+  loss:
+    weight:
+      # bellow are losses for object assocaition graph proposal
+      unmatched_object: 20.
+      relative_yaw: null
+      # bellow are losses (between 3D objects) for object association proposal and 3D NMS
+      affinity: 100.
+      bdb3d_iou: 5.
+      bdb3d_proj: null
+      object_size: 10.
+      object_center: 2.
+      object_rotation: 0.05
+  object3d_confidence:
+    weight:
+      bdb3d_proj: 200.
+      score: 100.
+      unmatched_camera: 1.
+      bdb2d_size: 2.
+  test:
+    log_img_iter: null
+    skip_prediction: False
+    save_results: True
+    evaluate_results: True
+    visualize_results: True
+  dataloader:
+    num_workers: 16
+    batch_size: 32
+    pin_memory: True
+  dataset:
+    dir: data/scene
+    ids: null
+    cameras: null
+    max_camera: 1
+    min_camera: 2
+    max_object: null
+    min_object: 2  # min object per camera
+    min_overlap_object: 3
+    min_object_area: .1
+    min_depth: 1.
+    relative_yaw_query: 128
+    input_dir: data/scene-understanding
+    resize_width: 256
+    gt_camera_pose: False
+    gt_pitch_roll: False  # actually mean gt camera pitch and roll
+    gt_camera_yaw: False
+    gt_object_pose: False
+    gt_affinity: False
+    zoom_out_ratio: 2.
+    full_novel_view: False
+trainer:
+  strategy: ddp
+  accelerator: gpu
+seed: 0

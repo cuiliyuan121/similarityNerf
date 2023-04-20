@@ -1,0 +1,16 @@
+camera:
+  width: 128
+  height: 128
+  focal_length: 131.25 # in pixel
+  sphere_radius: 2.5
+renderer:
+  samples: 1024
+object_cor_frame: ['-X', 'Z', 'Y']
+split:
+  train: 0.7
+  val: 0.1
+  test: 0.2
+num_camera:
+  train: 50
+  val: 251
+  test: 251

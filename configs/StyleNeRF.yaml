@@ -1,0 +1,60 @@
+model:
+  # Edit the below settings to overwrite the default hyperparameters
+  # You can also overwrite in cli arguments
+  decoder:
+    latent_dim: 512
+    scene_range: 1.0
+    attention_values: 10
+    use_viewdir: False
+    use_generator_encoder: False
+    disable_stylegan_noise: True
+    use_sdf: True
+    num_classes: 9
+  num_object: null
+  # The bellow settings do not effect the model architecture
+  near: 1.5
+  far: 3.5
+  depth_samples_per_ray: 64
+  loss:
+    lpips_net: 'vgg'
+    lpips_aug: True
+    func:
+      rgb: torch.nn.MSELoss
+    weight:
+      lpips: 1.
+      rgb: 1.
+      seg: null
+  train:
+    log_img_iter: 100
+    lr: 1.e-1
+    betas: [0.9, 0.95]
+    lr_scheduler:
+      gamma: 0.1
+      step_size: 15
+    num_opts: 30
+    min_video_length: 5
+  test:
+    log_img_iter: 10
+    lr: 1.e-1
+    betas: [0.9, 0.95]
+    lr_scheduler:
+      gamma: 0.1
+      step_size: 15
+    num_opts: 30
+    optimize_camera_id: [128]
+    min_video_length: 5
+  dataloader:
+    num_workers: 8
+    batch_size: 1
+    pin_memory: True
+  dataset:
+    dir: data/object
+    train_camera_num: 5
+    eval_camera_stride: 1
+    stride_from_camera: 0
+    category: all
+trainer:
+  max_epochs: 1
+  strategy: ddp
+  accelerator: gpu
+seed: 0

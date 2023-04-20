@@ -1,0 +1,45 @@
+model:
+  # Edit the below settings to overwrite the default hyperparameters
+  # You can also overwrite in cli arguments
+  camera_pose_proposal:
+    backbone: resnet34
+    n_layers: 3
+    W: 256
+    positional_encoding: 8
+    pretrained: True
+  input_images: [color_norm, depth]
+  # The bellow settings do not effect the model architecture
+  loss:
+    func:
+      reg: torch.nn.L1Loss
+    weight:
+      pitch: 1.
+      roll: 1.
+      relative_yaw: 0.1
+  train:
+    log_img_iter: 10000
+    lr: 1.e-04
+    lr_scheduler:
+      gamma: 0.5
+      step_size: 50
+  dataloader:
+    num_workers: 8
+    batch_size: 1
+    pin_memory: True
+  dataset:
+    dir: data/scene-monocular_depth
+    ids: null
+    cameras: null
+    max_camera: null
+    min_camera: 2
+    max_object: null
+    min_object: 0  # min object per camera
+    min_overlap_object: 3
+    min_object_area: .1
+    relative_yaw_query: 128
+    input_dir: null
+trainer:
+  max_epochs: 60
+  strategy: ddp
+  accelerator: gpu
+seed: 0

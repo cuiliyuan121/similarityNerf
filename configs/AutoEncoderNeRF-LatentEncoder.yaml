@@ -1,0 +1,50 @@
+model:
+  encoder_module: LatentEncoder
+  encoder:
+    backbone: resnet50
+    n_layers: 3
+    category_emdedding: 512
+    W: 256
+    num_category: auto
+    pretrained: True
+  decoder:
+    config_dir: null
+    checkpoint: null
+  input_images: [mask_color]
+  loss:
+    func:
+      latent_code: torch.nn.MSELoss
+    weight:
+      latent_code: 1.
+    log_loss_key: null
+  train:
+    log_img_iter: 10000
+    lr:
+      encoder: 1.e-04
+      decoder: null
+    lr_scheduler:
+      gamma: 0.5
+      step_size: 50
+  val:
+    log_img_iter: 5
+  test:
+    min_video_length: 5
+  dataloader:
+    num_workers: 8
+    batch_size: 1
+    pin_memory: True
+  dataset:
+    dir: data/object
+    train_camera_num: 2
+    eval_camera_stride: 20
+    stride_from_camera: rotate
+    category: all
+    input_dir: data/object_crop
+    resize_width: 280
+    random_crop_width: 256
+trainer:
+  max_epochs: 120
+  strategy: ddp
+  accelerator: gpu
+  limit_val_batches: 50
+seed: 0
