@@ -1,0 +1,1 @@
+CUDA_VISIBLE_DEVICES=2,3 python prepare_data.py --job render_3d_front_scenes  --processes 32 --cpu_threads 1 --render_processes 1 --id 009ccdf2-5f3f-46e7-a562-10da2b2e3bb9

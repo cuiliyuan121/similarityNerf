@@ -1,0 +1,28 @@
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width = 0.2\textwidth]{assets/logo}
+    \caption{中国海洋大学}
+    \label{fig:ouc1}
+\end{figure}
+
+测试表格：
+\begin{table}[!htbp]
+    \centering
+    \caption{一个基本的三线表}
+    \begin{tabular*}{350pt}{@{\extracolsep{\fill}}ccc}
+        \toprule
+        第一列 & 第二列     & 第三列      \\
+        \midrule
+        文字  & English & $\alpha$ \\
+        文字  & English & $\beta$  \\
+        文字  & English & $\gamma$ \\
+        \bottomrule
+    \end{tabular*}
+\end{table}
+
+测试公式：
+\begin{equation}
+    \lim_{x\to 0}{\frac{e^x-1}{2x}}
+    \overset{\left[\frac{0}{0}\right]}{\underset{\mathrm{H}}{=}}
+    \lim_{x\to 0}{\frac{e^x}{2}}={\frac{1}{2}}
+\end{equation}
