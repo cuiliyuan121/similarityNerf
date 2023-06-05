@@ -1,0 +1,16 @@
+known_camera:
+  min_camera: 2
+  max_camera: 7
+  ref_camera: 3  # number of known cameras for selecting objects in masked_color images
+dataset:
+  dir: data_debug/scene
+  ids: null
+  cameras: null
+  max_camera: 10
+  min_camera: 10
+  max_object: null
+  min_object: 2  # min object per camera
+  min_overlap_object: 1 #3
+  min_object_area: .1
+  min_depth: 1.
+  input_dir: data_debug/scene-detector

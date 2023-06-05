@@ -1,0 +1,26 @@
+model:
+  gt_match_iou_thres: 0.1
+  scene_proposal:
+    config_dir: configs/SceneProposal.yaml
+  scene_optimization:
+    config_dir: configs/SceneOptimization.yaml
+    loss:
+      proposal_supervision: True
+  test:
+    log_img_iter: null
+    skip_prediction: False
+    save_results: True
+    evaluate_results: True
+    visualize_results: True
+    num_spiral_view: 20
+    num_side_view: 20
+  dataset:
+    full_novel_view: True
+  dataloader:
+    num_workers: 16
+    batch_size: 32
+    pin_memory: True
+trainer:
+  devices: 1
+  accelerator: gpu
+seed: 0

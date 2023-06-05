@@ -1,0 +1,133 @@
+model:
+  z_sample: 16
+  sphere_tracing_iter: 50
+  batch_size: 40960
+  surface_near: 0.05
+  surface_far: 0.2
+  safe_region_render: True
+  segmap_foreground_thres: 0.5
+  loss:
+    proposal_supervision: False
+    func:
+      bdb3d_proj: torch.nn.L1Loss
+      object_size_constraint: torch.nn.L1Loss
+      object_center_constraint: torch.nn.L1Loss
+      object_rotation_6d_constraint: torch.nn.L1Loss
+      camera_pitch_constraint: torch.nn.L1Loss
+      camera_roll_constraint: torch.nn.L1Loss
+      object2d_size_constraint: torch.nn.L1Loss
+      object2d_offset_constraint: torch.nn.L1Loss
+      object2d_center_depth_constraint: torch.nn.L1Loss
+      object2d_orientation_constraint: torch.nn.L1Loss
+    weight:
+      gravity: 10.
+      bdb3d_proj: 15.
+      object_size_constraint: 5.
+      object_center_constraint: .5
+      object_rotation_6d_constraint: .1
+      camera_pitch_constraint: 10.
+      camera_roll_constraint: 10.
+      object2d_size_constraint: 10.
+      object2d_offset_constraint: 1.
+      object2d_center_depth_constraint: 5.
+      object2d_orientation_constraint: 1.
+      chamfer_mask: 5.
+      chamfer_depth: 1.
+    log_loss_key: unbatched_loss
+  autoencoder_nerf:
+    config_dir: configs/AutoEncoderNeRF-LatentEncoder.yaml  # needed if decoder checkpoint is provided
+    checkpoint: null
+    code_embedding: mean_latent_code # (encoder, mean_latent_code)
+    decoder:
+      config_dir: configs/StyleNeRF.yaml
+      checkpoint: pretrain/multicategory_generator/checkpoint_latest.pth
+      loss:
+        lpips_net: 'vgg'
+        lpips_aug: True
+        func:
+          rgb: torch.nn.MSELoss
+        weight:
+          lpips: 1.
+          rgb: 0.
+          seg: 0.
+        log_loss_key: object_patch_loss
+  test:
+    log_img_iter: null
+    skip_prediction: False
+    save_results: True
+    evaluate_results: True
+    visualize_results: True
+    scene_optim_vis:
+      vis_types: [wireframe, video]
+    lr:
+      object_latent_code: 7.e-3
+      object_rotation_6d: 5.e-2
+      object_center: 5.e-2
+      object_size: 5.e-2
+      camera_rotation_6d: 3.e-2
+      camera_position: 1.e-1
+    num_opts: 100
+    optimizer: torch.optim.Adam
+    min_video_length: 5
+    random_ray_sample: null
+    max_sqrt_ray_sample: 64
+    sample_region: bdb2d_of_bdb3d
+    min_sample_region_width: 16
+    detach_sample_point: False
+    skip_stage: []  # specify the name of stage(s) to skip
+    optim_schedule:
+      # - name: pose_optim  # optimize pose only
+      #   proportion: 0.5 #0.3333  # proportion of stages should have the sum of 1
+      #   loss_weight:
+      #     loss: True
+      #     object_patch_loss: False  # disable all nerf related loss
+      #   lr:
+      #     object_latent_code: null
+      #    # object_image_feature: null
+      #   lr_scheduler:
+      #     gamma: 0.5
+      #     step_size: 20
+      - name: nerf_optim  # optimize image feature only
+        proportion: 1 #0.6667  
+        loss_weight:
+          loss: False  # disable all pose related loss
+          object_patch_loss: True
+        lr:  # disable all pose params
+          object_rotation_6d: null
+          object_center: null
+          object_size: null
+          camera_rotation_6d: null
+          camera_position: null
+        lr_scheduler:
+          gamma: 0.5
+          step_size: 40
+  dataloader:
+    num_workers: 16
+    batch_size: 32
+    pin_memory: True
+  dataset:
+    dir: data/scene
+    ids: null
+    cameras: null
+    max_camera: 3
+    min_camera: null
+    max_object: null
+    min_object: 2  # min object per camera
+    min_overlap_object: 1 #3
+    min_object_area: .1
+    noise_std: null
+#      object_rotation: 45  # in degrees
+#      object_center: 0.5  # in meters
+#      object_size: 0.3  # in ratio
+#      camera_rotation: 5.  # in degrees
+#      camera_position: 0.5  # in meters
+#      depth_scale: null  # in ratio
+    input_dir: null
+    resize_width: 256
+    config_file: gdino/groundingdino/config/GroundingDINO_SwinB.cfg.py
+    checkpoint_path: gdino/groundingdino/checkpoint/groundingdino_swinb_cogcoor.pth
+
+trainer:
+  devices: 1
+  accelerator: gpu
+seed: 0

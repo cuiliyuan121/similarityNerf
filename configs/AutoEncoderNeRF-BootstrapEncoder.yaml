@@ -1,0 +1,47 @@
+model:
+  encoder_module: BootstrapEncoder
+  encoder:
+    num_category: null
+    latent_dim: 512
+    pose_regressor: True
+    latent_regressor: True
+    separate_backbones: False
+    pretrained: False
+    checkpoint: pretrain/coords/c_it280000_latest.pth
+  decoder:
+    config_dir: configs/StyleNeRF.yaml
+    checkpoint: pretrain/generator/checkpoint_best.pth
+    decoder:
+      num_classes: null
+  input_images: [mask_color]
+  train:
+    log_img_iter: 10000
+    lr:
+      encoder: 1.e-04
+      decoder: null
+    lr_scheduler:
+      gamma: 0.5
+      step_size: 50
+  val:
+    log_img_iter: 5
+  test:
+    min_video_length: 5
+  dataloader:
+    num_workers: 8
+    batch_size: 1
+    pin_memory: True
+  dataset:
+    dir: data/object
+    train_camera_num: 2
+    eval_camera_stride: 20
+    stride_from_camera: rotate
+    category: all
+    input_dir: data/object_crop
+    resize_width: 280
+    random_crop_width: 256
+trainer:
+  max_epochs: 120
+  strategy: ddp
+  accelerator: gpu
+  limit_val_batches: 50
+seed: 0

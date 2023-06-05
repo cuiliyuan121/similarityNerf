@@ -1,0 +1,55 @@
+camera:
+  width: 640
+  height: 480
+  focal_length: 519 # in pixel
+  altitude:
+    min: 1.7 # in meters
+    max: 2.1 # in meters
+  pitch:
+    min: -30 # in degrees
+    max: 0 # in degrees
+  roll:
+    min: -10 # in degrees
+    max: 10 # in degrees
+random_texture: [floor, wood, wall]
+proximity_checks: # Check if there are obstacles in front of the camera which are too far or too close based on the given proximity_checks.
+  min: 1.5 # in meters
+  avg: # Check that the average distance is not within the accepted interval
+    min: 1.5 # in meters
+    max: 5.0 # in meters
+  no_background: False
+special_categories: [
+  bed, chair, sofa, table, desk, lamp, 
+  cabinet, nightstand, shelf,
+  stand, stool, bookcase, wardrobe]
+my_check_novel_pose: # Checks if a newly sampled pose is novel with respect to the rotation and distance thresholds
+  min_rotation: 30. # minimal difference of camera rotations in degrees
+  min_distance: .5 # minimal camera distances in meters
+check_novel_pose: # Checks if a newly sampled pose is novel based on variance checks.
+  check_pose_novelty_rot: False # Checks that a sampled new pose is novel with respect to the rotation component.
+  check_pose_novelty_translation: False # Checks that a sampled new pose is novel with respect to the translation component.
+  min_var_diff_rot: -1 # Considers a pose novel if it increases the variance of the rotation component of all poses sampled by
+  # this parameter's value in percentage. If set to -1, then it would only check that the variance is
+  # increased. Default: sys.float_info.min.
+  min_var_diff_translation: -1 # Same as min_var_diff_rot but for translation. If set to -1, then it would only check that the variance
+  # is increased. Default: sys.float_info.min.
+multi_view:
+  component_proposal_try: 2500 # fix chosen component with maximum camera number and sample camera pose for it
+  max_try: 10000
+  target_num_camera: 10 # the generated cameras will be around target_num_camera
+  min_object: 2
+  min_overlap_object: 1
+  min_object_area: 1. # this ensures min_object visible with each covering at least min_object_area pixels
+  sqrt_number_of_rays: 20 # square of number of rays for ray casting
+  min_horizontal_coverage: 0.5 # this ensures that the objects covers at least min_horizontal_coverage of the horizontal field of view
+  min_vertical_coverage: 0.3 # this ensures that the objects covers at least min_vertical_coverage of the vertical field of view
+  min_horizontal_span: 0.7 # ensures that the objects are not squeezed to the left or right of the image
+  min_vertical_span: 0.6 # ensures that the objects are not squeezed to the top or bottom of the image
+  focus_radius: 0.2 # ensure that at least one object is in the center of the image
+renderer:
+  samples: 1024
+object_cor_frame: ['-X', 'Z', 'Y']
+split:
+  train: 0.7
+  val: 0.1
+  test: 0.2

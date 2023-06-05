@@ -1,0 +1,27 @@
+bed: [
+  'King-size Bed', 'Bunk Bed', 'Bed Frame', 'Single bed', 'Kids Bed',
+  'Couch Bed']
+chair: [
+  'Dining Chair', 'Lounge Chair / Cafe Chair / Office Chair', 'Dressing Chair',
+  'Classic Chinese Chair', 'Barstool', 'Hanging Chair', 'Folding chair',
+  'armchair']
+sofa: [
+  'Three-Seat / Multi-seat Sofa', 'Loveseat Sofa', 'L-shaped Sofa',
+  'Lazy Sofa', 'Chaise Longue Sofa', 'U-shaped Sofa'
+  ]
+table: [
+  'Coffee Table', 'Corner/Side Table', 'Sideboard / Side Cabinet / Console Table',
+  'Round End Table', 'Dressing Table', 'Dining Table', 'Bar']
+desk: [
+  'TV Stand', 'Desk']
+lamp: [
+  'Pendant Lamp', 'Ceiling Lamp', 'Floor Lamp', 'Wall Lamp']
+cabinet: [
+  'Children Cabinet', 'Bookcase / jewelry Armoire', 'Wardrobe', 'Wine Cabinet',
+  'Drawer Chest / Corner cabinet', 'Shoe Cabinet']
+nightstand: [
+  'Nightstand']
+bookshelf: [
+  'Shelf']
+other: [
+  'Footstool / Sofastool / Bed End Stool / Stool', 'None']
