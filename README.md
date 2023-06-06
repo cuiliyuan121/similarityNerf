@@ -1,5 +1,8 @@
 # similarityNerf
 
+## weights:
+   Get it in onedrive cloud.
+   
 ## Command: 
 
 ### Evaluate SceneOptimization
@@ -56,7 +59,7 @@ python tools/ensemble.py
 ```
 
 The new dataset will be saved in `data/scene-monocular_depth`.
-## **Finetune 2D Detector**
+### **Finetune 2D Detector**
 
 The generated detection results has already been saved as `output/mask_rcnn.json`. You'll then need to convert the detection results to our format by running the following command:
 
