@@ -1,4 +1,4 @@
-# similarityNerf
+# Ocean University of China undergraduate graduation design
 
 ## weights:
    Get it in onedrive cloud.
